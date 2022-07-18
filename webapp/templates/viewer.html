@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- レスポンシブにするために必要 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Category Estimator</title>
+
+    <link rel="icon" href="../static/icon.png">
+    <link rel="shortcut icon" href="../static/icon.png">
+
+    <script type="text/javascript">
+        var mtx = false;
+        // サーバーにテキストをuploadする関数
+        estimate_image = function (){
+            if (mtx == true) return;
+            mtx = true;
+
+            // フォームデータを取得
+            var formdata = new FormData();
+            formdata.append("image-file", document.getElementById("image-file").files[0])
+
+            // XMLHttpRequestによるアップロード処理
+            var xhttpreq = new XMLHttpRequest();
+            xhttpreq.onreadystatechange = function() {
+                if (xhttpreq.readyState == 4 && xhttpreq.status == 200) {
+                    var name = xhttpreq.response;
+                    document.getElementById("image-title").innerText = "この画像は" + name + "です";
+                    mtx = false;
+                }
+            };
+            xhttpreq.open("POST", "/estimate", true);
+            // xhttpreq.responseType = 'blob'; 
+            xhttpreq.send(formdata);
+        }
+
+        function previewImage(obj)
+        {
+          var fileReader = new FileReader();
+          fileReader.onload = (function() {
+            document.getElementById('image').src = fileReader.result;
+          });
+          fileReader.readAsDataURL(obj.files[0]);
+        }        
+
+        // ページロードされた時に呼ばれるコールバック関数
+        window.onload = function load() {
+          document.getElementById('estimate-btn').addEventListener('click', function (event){ estimate_image(); });
+        }
+
+    </script>
+</head>
+
+
+<body>
+  <form id="upload_form">
+    <input id="image-file" type="file" accept='image/*' onchange="previewImage(this);">
+    <input id="estimate-btn" type="button" value="Estimate!"/>
+  </form>
+
+  <img id="image" height="300px" src="sample"/>
+  <div id="image-title">この画像は？？です。</div>
+</body>
+
