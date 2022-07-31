@@ -3,7 +3,7 @@ from flask import render_template, request
 from webapp import app
 
 # 深層学習結果をロードする
-from image2text import Image2Text
+from image2text_torch import Image2Text
 
 UPLOAD_FOLDER = './uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
