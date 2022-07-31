@@ -1,6 +1,8 @@
 *.midi
 *.mid
 *.pdf
+*.mp4
+
 !*uploads/score_adaptor_sample.midi
 
 # Byte-compiled / optimized / DLL files
